@@ -6,22 +6,20 @@ import io
 import sys
 
 class TestBook:
-    '''Book in book.py'''
+    def test_has_title_author_price_pages(self):
+        '''has the title, author, price, and pages passed into __init__, and values can be set to new instance.'''
+        book = Book("And Then There Were None", "Agatha Christie", 10.99, 272)
+        assert book.get_title() == "And Then There Were None"
+        assert book.get_author() == "Agatha Christie"
+        assert book.get_price() == 10.99
+        assert book.get_pages() == 272
 
-    def test_has_title_and_page_count(self):
-        '''has the title and page_count passed into __init__, and values can be set to new instance.'''
-        book = Book("And Then There Were None", 272)
-        assert(book.page_count == 272)
-        assert(book.title == "And Then There Were None")
 
+    
     def test_requires_int_page_count(self):
         '''prints "page_count must be an integer" if page_count is not an integer.'''
-        book = Book("And Then There Were None", 272)
-        captured_out = io.StringIO()
-        sys.stdout = captured_out
-        book.page_count = "not an integer"
-        sys.stdout = sys.__stdout__
-        assert captured_out.getvalue() == "page_count must be an integer\n"
+        with pytest.raises(TypeError, match="page_count must be an integer"):
+            book = Book("And Then There Were None", "Agatha Christie", 10.99, "272")
 
     def test_can_turn_page(self):
         '''outputs "Flipping the page...wow, you read fast!" when method turn_page() is called'''
